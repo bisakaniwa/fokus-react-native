@@ -1,19 +1,28 @@
 import { Ionicons } from "@expo/vector-icons";
-import { router } from "expo-router";
-import { useState } from "react";
+import { router, useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import { Keyboard, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, TouchableWithoutFeedback, View } from "react-native";
 import { useTaskContext } from "../../context/useTaskContext";
 
-export default function AddTask() {
-  const { addTask } = useTaskContext();
-  const [description, setDescription] = useState();
+export default function EditTask() {
+  const { id } = useLocalSearchParams();
+  const { tasks, updateTask } = useTaskContext();
+  const [description, setDescription] = useState('');
+
+  const task = tasks?.find((task) => task.id == id);
+
+  useEffect(() => {
+    if (task) {
+      setDescription(task.description);
+    }
+  }, [])
 
   const submitTask = () => {
     if (!description) {
       return;
     }
 
-    addTask(description);
+    updateTask(task.id, description);
     setDescription('');
     router.navigate('/tasks');
   };
@@ -26,11 +35,7 @@ export default function AddTask() {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.inner}>
           <Text style={styles.text}>
-            Adicionar tarefa:
-          </Text>
-
-          <Text style={styles.label}>
-            Em que você está{'\n'} trabalhando?
+            Editar tarefa:
           </Text>
           <TextInput
             style={styles.input}

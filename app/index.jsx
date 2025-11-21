@@ -28,10 +28,8 @@ export default function Index() {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
     backgroundColor: "#021123",
     gap: 40,
