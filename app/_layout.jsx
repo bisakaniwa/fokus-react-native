@@ -1,6 +1,5 @@
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import { Drawer } from 'expo-router/drawer';
+import { BackButtonDrawer } from '../components/BackButtonDrawer';
 import { TasksProvider } from '../context/TaskProvider';
 
 export default function Layout() {
@@ -46,17 +45,7 @@ export default function Layout() {
           options={{
             drawerItemStyle: { display: 'none' },
             title: '',
-            headerLeft: () => {
-              return (
-                <Ionicons
-                  name="arrow-back"
-                  size={24}
-                  color="#FFF"
-                  style={{ marginLeft: 16 }}
-                  onPress={() => router.navigate('/tasks')}
-                />
-              )
-            }
+            headerLeft: () => <BackButtonDrawer backHref="/tasks" />,
           }}
         />
         <Drawer.Screen
@@ -64,17 +53,7 @@ export default function Layout() {
           options={{
             drawerItemStyle: { display: 'none' },
             title: '',
-            headerLeft: () => {
-              return (
-                <Ionicons
-                  name="arrow-back"
-                  size={24}
-                  color="#FFF"
-                  style={{ marginLeft: 16 }}
-                  onPress={() => router.navigate('/tasks')}
-                />
-              )
-            }
+            headerLeft: () => <BackButtonDrawer backHref='/tasks' />,
           }}
         />
       </Drawer>

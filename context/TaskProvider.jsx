@@ -6,6 +6,7 @@ export const TaskContext = createContext();
 export const TasksProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+
   const getTasks = async () => {
     try {
       const jsonValue = await storage.getItem(TASKS_STORAGE_KEY);
@@ -17,7 +18,7 @@ export const TasksProvider = ({ children }) => {
       }
       return setTasks(loadedData);
     } catch (e) {
-
+      console.log(e);
     }
   }
 
@@ -26,7 +27,7 @@ export const TasksProvider = ({ children }) => {
       const jsonValue = JSON.stringify(value);
       return await storage.setItem(TASKS_STORAGE_KEY, jsonValue);
     } catch (e) {
-
+      console.log(e);
     }
   }
 
@@ -37,7 +38,6 @@ export const TasksProvider = ({ children }) => {
   useEffect(() => {
     if (isLoaded) {
       storeTasks(tasks);
-      getTasks();
     }
   }, [tasks])
 
@@ -58,25 +58,23 @@ export const TasksProvider = ({ children }) => {
     setTasks((oldState) => {
       return oldState.map((task) => {
         if (task.id == id) {
-          return {
-            ...task,
-            description: newDescription,
-          };
+          task.description = newDescription;
         }
         return task;
       });
     });
   };
 
-  const toggleTaskCompleted = (taskId) => {
-    setTasks((oldState) => {
+  const toggleTaskCompleted = async (taskId) => {
+    await setTasks((oldState) => {
       return oldState.map((task) => {
-        if (task.id === taskId) {
-          task.completed = !task.completed;
+        if (task.id == taskId) {
+          task.completed = !task.completed
         }
         return task;
       });
     });
+
   };
 
   const deleteTask = (taskId) => {

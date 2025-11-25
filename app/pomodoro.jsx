@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Image, ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ActionButton } from '../components/ActionButton';
 import { FokusButton } from '../components/FokusButton';
 import { Footer } from '../components/Footer';
@@ -68,33 +69,33 @@ export default function Pomodoro() {
   };
 
   return (
-    <View
-      style={styles.container}
-    >
-      <Image source={timerType.image} style={{ height: 312 }} />
+    <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.inner}>
+        <Image source={timerType.image} style={{ height: 312 }} />
 
-      <View style={styles.actions}>
-        <View style={styles.context}>
-          {pomodoro.map((timer) =>
-            <ActionButton
-              key={timer.id}
-              active={timer.id === timerType.id}
-              display={timer.display}
-              onPress={() => toggleTimerType(timer)}
-            />
-          )}
+        <View style={styles.actions}>
+          <View style={styles.context}>
+            {pomodoro.map((timer) =>
+              <ActionButton
+                key={timer.id}
+                active={timer.id === timerType.id}
+                display={timer.display}
+                onPress={() => toggleTimerType(timer)}
+              />
+            )}
+          </View>
+
+          <Timer totalSeconds={seconds} />
+
+          <FokusButton
+            onPress={toggleTimer}
+            title={timerRunning ? 'Pausar' : 'Começar'}
+            icon={timerRunning ? <PauseIcon /> : <PlayIcon />}
+          />
         </View>
-
-        <Timer totalSeconds={seconds} />
-
-        <FokusButton
-          onPress={toggleTimer}
-          title={timerRunning ? 'Pausar' : 'Começar'}
-          icon={timerRunning ? <PauseIcon /> : <PlayIcon />}
-        />
-      </View>
-      <Footer />
-    </View>
+        <Footer />
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -102,8 +103,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
     backgroundColor: "#021123",
+  },
+  inner: {
+    alignItems: 'center',
     gap: 40,
   },
   actions: {

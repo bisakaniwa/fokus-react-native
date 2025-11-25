@@ -16,7 +16,6 @@ export default function Tasks() {
           <FlatList
             data={tasks}
             renderItem={({ item }) => <TaskItem
-              key={item.id}
               completed={item.completed}
               text={item.description}
               onToggleComplete={() => toggleTaskCompleted(item.id)}
@@ -30,6 +29,10 @@ export default function Tasks() {
                 Lista de tarefas:
               </Text>
             }
+            ListEmptyComponent={<Text style={styles.emptyList}>
+              Parece que ainda não há tarefas na sua lista!{'\n'}
+              Que tal adicionar a primeira?
+            </Text>}
             ListFooterComponent={<View style={{ marginTop: 16 }}>
               <FokusButton
                 title="Adicionar nova tarefa"
@@ -59,7 +62,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#FFF',
     fontSize: 26,
-    marginBottom: 16,
+    margin: 16,
+  },
+  emptyList: {
+    color: '#98A0A8',
+    fontSize: 18,
+    textAlign: 'center',
+    paddingVertical: 40,
   },
   inner: {
     gap: 8,
